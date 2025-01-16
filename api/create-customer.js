@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   // Shopify API URL and access token (retrieved from environment variables)
   const storeUrl = process.env.SHOPIFY_STORE_URL;
-  const shopifyAPI = `${storeUrl}/admin/api/2023-01/customers.json`;
+  const shopifyAPI = `${storeUrl}/admin/api/2021-07/customers.json`;
   const accessToken = process.env.SHOPIFY_ACCESS_TOKEN; // Access token stored securely in .env
 
   try {
