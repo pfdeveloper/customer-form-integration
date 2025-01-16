@@ -1,16 +1,14 @@
-import { Shopify } from "@shopify/shopify-api";
+import { shopifyApi, LATEST_API_VERSION } from "@shopify/shopify-api";
 
-export const initializeShopifyContext = () => {
-  Shopify.Context.initialize({
-    API_KEY: process.env.SHOPIFY_API_KEY,
-    API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
-    SCOPES: ["write_customers"],
-    HOST_NAME: process.env.SHOPIFY_STORE_URL.replace(/https?:\/\//, ""),
-    IS_EMBEDDED_APP: true,
-    API_VERSION: "2023-07",
-  });
-};
+const shopify = shopifyApi({
+  apiKey: process.env.SHOPIFY_API_KEY,
+  apiSecretKey: process.env.SHOPIFY_API_SECRET,
+  scopes: ["write_customers"],
+  hostName: process.env.SHOPIFY_STORE_URL.replace(/https?:\/\//, ""),
+  apiVersion: LATEST_API_VERSION,
+  isEmbeddedApp: false,
+});
 
 export const createRestClient = (shop, accessToken) => {
-  return new Shopify.Clients.Rest(shop, accessToken);
+  return new shopify.clients.Rest({ shopName: shop, accessToken });
 };
