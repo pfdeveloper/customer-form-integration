@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 
 export default async function handler(req, res) {
    // Allow CORS for all origins (you can replace '*' with a specific URL for better security)
-   res.setHeader('Access-Control-Allow-Origin', 'https://development-km.myshopify.com');  // Allow all origins (for development only)
+   res.setHeader('Access-Control-Allow-Origin', '*');  // Allow all origins (for development only)
    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
  
