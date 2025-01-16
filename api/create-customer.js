@@ -1,46 +1,53 @@
-// api/create-customer.js
+import { initializeShopifyContext, createRestClient } from "../config/shopify";
+import { validateCreateCustomerRequest } from "../utils/validateRequest";
+import { DataType } from "@shopify/shopify-api";
 
-import axios from 'axios';
+// Initialize Shopify context once
+initializeShopifyContext();
 
+/**
+ * Vercel API Handler for creating a customer in Shopify.
+ * @param {Object} req - HTTP request object.
+ * @param {Object} res - HTTP response object.
+ */
 export default async function handler(req, res) {
-
-
-  res.setHeader("Access-Control-Allow-Origin","*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Methods", "POST");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
-
-  // Only allow POST requests
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method Not Allowed" });
+    return res.status(405).json({ error: "Method Not Allowed. Use POST." });
   }
 
-  const { first_name, last_name, email, company, product } = req.body;
+  // Validate request body
+  const validationError = validateCreateCustomerRequest(req.body);
+  if (validationError) {
+    return res.status(400).json({ error: validationError });
+  }
 
-  // Shopify API URL and access token (retrieved from environment variables)
-  const storeUrl = process.env.SHOPIFY_STORE_URL;
-  const shopifyAPI = `${storeUrl}/admin/api/2023-01/customers.json`;
-  const accessToken = process.env.SHOPIFY_ACCESS_TOKEN; // Access token stored securely in .env
+  const shop = process.env.SHOPIFY_STORE_URL;
+  const accessToken = process.env.SHOPIFY_ACCESS_TOKEN;
+  const { customer } = req.body;
 
   try {
-    const response = await axios.post(shopifyAPI, {
-      customer: {
-        first_name,
-        last_name,
-        email,
-        note: `Company: ${company}`,
-        tags: product,
-      },
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': accessToken,
-      },
+    // Create a Shopify REST client
+    const client = createRestClient(shop, accessToken);
+
+    // Create the customer in Shopify
+    const response = await client.post({
+      path: "customers",
+      data: { customer },
+      type: DataType.JSON,
     });
 
-    return res.status(200).json(response.data); // Send successful response back
+    // Return success response
+    return res.status(201).json({
+      message: "Customer created successfully.",
+      customer: response.body.customer,
+    });
   } catch (error) {
-    console.error('Internal Server Error:', error); // Log internal error
-    return res.status(500).json({ message: 'Internal Server Error', error });
+    console.error("Error creating customer:", error);
+
+    // Handle errors gracefully
+    return res.status(500).json({
+      error: "Failed to create customer.",
+      details: error.message,
+    });
   }
 }
