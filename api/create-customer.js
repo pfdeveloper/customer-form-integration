@@ -1,77 +1,42 @@
-import { initializeShopifyContext, createRestClient } from "../config/shopify";
-import { validateCreateCustomerRequest } from "../utils/validateRequest";
-import { DataType } from "@shopify/shopify-api";
+import { Shopify } from "@shopify/shopify-api";
 
-// Initialize Shopify context globally
-initializeShopifyContext();
-
-/**
- * Vercel API Handler for creating a customer in Shopify.
- * @param {Object} req - HTTP request object.
- * @param {Object} res - HTTP response object.
- */
 export default async function handler(req, res) {
-  // Set CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Restrict in production
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  // Handle preflight requests
-  if (req.method === "OPTIONS") {
-    return res.status(204).end();
-  }
-
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method Not Allowed. Use POST." });
+    res.setHeader("Allow", ["POST"]);
+    return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
   }
 
-  // Validate request body
-  const validationError = validateCreateCustomerRequest(req.body);
-  if (validationError) {
-    return res.status(400).json({ error: validationError });
-  }
+  const { firstName, lastName, email, note } = req.body;
 
-  const shop = process.env.SHOPIFY_STORE_URL;
-  const accessToken = process.env.SHOPIFY_ACCESS_TOKEN;
-
-  // Check environment variables
-  if (!shop || !accessToken) {
-    return res.status(500).json({
-      error: "Server configuration error. Missing Shopify credentials.",
-    });
-  }
-
-  const customer = req.body;
+  // Initialize Shopify API client
+  const shopify = new Shopify.Clients.Rest(
+    process.env.SHOPIFY_STORE_URL,
+    process.env.SHOPIFY_ACCESS_TOKEN
+  );
 
   try {
-    // Create a Shopify REST client
-    const client = createRestClient(shop, accessToken);
-
-    // Create the customer in Shopify
-    const response = await client.post({
+    // Create a new customer
+    const response = await shopify.post({
       path: "customers",
-      data: customer,
-      type: DataType.JSON,
+      data: {
+        customer: {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          note: note,
+        },
+      },
+      type: "application/json",
     });
 
-    // Verify response structure
-    if (!response?.body?.customer) {
-      throw new Error("Invalid Shopify response format.");
-    }
-
-    // Return success response
-    return res.status(201).json({
-      message: "Customer created successfully.",
-      customer: response.body.customer,
-    });
+    return res
+      .status(200)
+      .json({ success: true, customer: response.body.customer });
   } catch (error) {
-    console.error("Error creating customer:", error);
-
-    // Handle errors gracefully
-    const isDevelopment = process.env.NODE_ENV !== "production";
-    return res.status(500).json({
-      error: "Failed to create customer.",
-      details: isDevelopment ? error.message : undefined,
-    });
+    console.error(
+      "Error creating customer:",
+      error.response?.data || error.message
+    );
+    return res.status(500).json({ error: "Failed to create customer." });
   }
 }
