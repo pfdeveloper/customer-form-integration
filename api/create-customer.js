@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
   const shop = process.env.SHOPIFY_STORE_URL;
   const accessToken = process.env.SHOPIFY_ACCESS_TOKEN;
-  const { customer } = req.body;
+  const customer = req.body;
 
   try {
     // Create a Shopify REST client
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     // Create the customer in Shopify
     const response = await client.post({
       path: "customers",
-      data: { customer },
+      data: customer,
       type: DataType.JSON,
     });
 
