@@ -1,6 +1,6 @@
 // api/create-customer.js
 
-const fetch = require('node-fetch');
+import axios from 'axios';
 
 export default async function handler(req, res) {
 
@@ -23,33 +23,24 @@ export default async function handler(req, res) {
   const accessToken = process.env.SHOPIFY_ACCESS_TOKEN; // Access token stored securely in .env
 
   try {
-    const response = await fetch(shopifyAPI, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Access-Token": accessToken,
+    const response = await axios.post(shopifyAPI, {
+      customer: {
+        first_name,
+        last_name,
+        email,
+        note: `Company: ${company}`,
+        tags: product,
       },
-      body: JSON.stringify({
-        customer: {
-          first_name,
-          last_name,
-          email,
-          note: `Company: ${company}`,
-          tags: product,
-        },
-      }),
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': accessToken,
+      },
     });
 
-    const data = await response.json();
-
-    if (response.ok) {
-      return res.status(200).json(data);
-    } else {
-      return res
-        .status(500)
-        .json({ message: "Error creating customer", error: data });
-    }
+    return res.status(200).json(response.data); // Send successful response back
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error", error });
+    console.error('Internal Server Error:', error); // Log internal error
+    return res.status(500).json({ message: 'Internal Server Error', error });
   }
 }
