@@ -5,7 +5,7 @@ export const initializeShopifyContext = () => {
     API_KEY: process.env.SHOPIFY_API_KEY,
     API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
     SCOPES: ["write_customers"],
-    HOST_NAME: process.env.SHOPIFY_STORE_URL,
+    HOST_NAME: process.env.SHOPIFY_STORE_URL.replace(/https?:\/\//, ''),
     IS_EMBEDDED_APP: false,
     API_VERSION: ApiVersion.January24,
   });
