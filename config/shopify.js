@@ -1,4 +1,8 @@
+import dotenv from "dotenv";
 import { shopifyApi, LATEST_API_VERSION } from "@shopify/shopify-api";
+
+// Load environment variables from .env file
+dotenv.config();
 
 const shopify = shopifyApi({
   apiKey: process.env.SHOPIFY_API_KEY,

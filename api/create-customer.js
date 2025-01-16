@@ -1,6 +1,10 @@
 import { initializeShopifyContext, createRestClient } from "../config/shopify";
 import { validateCreateCustomerRequest } from "../utils/validateRequest";
 import { DataType } from "@shopify/shopify-api";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 // Initialize Shopify context once
 initializeShopifyContext();
@@ -11,7 +15,7 @@ initializeShopifyContext();
  * @param {Object} res - HTTP response object.
  */
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*"); 
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
