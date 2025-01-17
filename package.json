@@ -2,6 +2,7 @@
   "name": "customer-form-integration-app",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node api/create-customer.js"
   },
