@@ -1,4 +1,3 @@
-// api/test.js
 export default function handler(req, res) {
-  res.send("Shopify API integration is working!");
-}
+    res.status(200).end('Hello Cron!');
+  }
