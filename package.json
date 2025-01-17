@@ -2,12 +2,11 @@
   "name": "customer-form-integration-app",
   "version": "1.0.0",
   "main": "api/test.js",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "engines": {
-    "node": "20.18.0"
+    "node": "20.x"
   },
   "license": "ISC",
   "description": "",
