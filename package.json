@@ -1,10 +1,15 @@
 {
   "name": "customer-form-integration-app",
   "version": "1.0.0",
-  "main": "api/create-customer.js",
-  "scripts": {},
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "keywords": [],
   "author": "",
+  "engines": {
+    "node": "20.x"
+  },
   "license": "ISC",
   "description": "",
   "dependencies": {
