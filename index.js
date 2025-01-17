@@ -5,6 +5,7 @@ const { restResources } = require("@shopify/shopify-api/rest/admin/2023-04");
 const express = require("express");
 
 const shopify = shopifyApi({
+  apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET,
   apiVersion: ApiVersion.April23,
   isCustomStoreApp: true,
