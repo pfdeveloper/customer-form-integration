@@ -1,9 +1,11 @@
 {
   "name": "customer-form-integration-app",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "api/test.js",
   "scripts": {
-    "start": "node index.js"
+    "dev": "vercel dev",
+    "build": "vercel build",
+    "start": "vercel start"
   },
   "keywords": [],
   "author": "",
