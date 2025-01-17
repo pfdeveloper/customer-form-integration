@@ -64,6 +64,11 @@ app.post("/api/create-customer", async (req, res) => {
   }
 });
 
+
+app.get('/test', (req, res) => {
+  res.send('Shopify API integration is working!');
+});
+
 app.listen(port, () => {
   console.log(`Server is running...`);
 });
