@@ -2,7 +2,10 @@
   "name": "customer-form-integration-app",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node api/create-customer.js",
+    "postinstall": "npm install"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -10,5 +13,8 @@
   "dependencies": {
     "@shopify/shopify-api": "^11.7.0",
     "dotenv": "^16.4.7"
+  }, 
+  "engines": {
+    "node": "20.x"
   }
 }
