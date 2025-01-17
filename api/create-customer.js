@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     // getSessionFromStorage() must be provided by application
     const session = await getSessionFromStorage(sessionId);
 
-    const customer = new shopify.rest.Customer({ session: session });
+    const customer = new shopify.rest.Customer({ session });
     customer.first_name = firstName;
     customer.last_name = lastName;
     customer.email = email;
