@@ -1,11 +1,8 @@
 {
   "name": "customer-form-integration-app",
   "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node api/create-customer.js"
-  },
+  "main": "api/create-customer.js",
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -14,8 +11,5 @@
     "@shopify/shopify-api": "^11.7.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2"
-  },
-  "engines": {
-    "node": "20.x"
   }
 }
