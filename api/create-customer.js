@@ -3,6 +3,10 @@ import { shopifyApi, ApiVersion } from "@shopify/shopify-api";
 import { restResources } from "@shopify/shopify-api/rest/admin/2023-04";
 
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
     return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
