@@ -1,7 +1,8 @@
-import "@shopify/shopify-api/adapters/node";
-import { shopifyApi, ApiVersion } from "@shopify/shopify-api";
-import { restResources } from "@shopify/shopify-api/rest/admin/2023-04";
-import express from "express";
+require("@shopify/shopify-api/adapters/node"); // Adapters do not need an assignment
+
+const { shopifyApi, ApiVersion } = require("@shopify/shopify-api");
+const { restResources } = require("@shopify/shopify-api/rest/admin/2023-04");
+const express = require("express");
 
 const shopify = shopifyApi({
   apiSecretKey: process.env.SHOPIFY_API_SECRET,
