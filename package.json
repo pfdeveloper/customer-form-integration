@@ -3,14 +3,11 @@
   "version": "1.0.0",
   "main": "api/test.js",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "vercel build",
-    "start": "vercel start"
   },
   "keywords": [],
   "author": "",
   "engines": {
-    "node": "20.x"
+    "node": "20.18.0"
   },
   "license": "ISC",
   "description": "",
